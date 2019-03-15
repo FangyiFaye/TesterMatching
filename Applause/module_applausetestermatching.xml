@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_applausetestermatching" default="compile.module.applausetestermatching">
+  <dirname property="module.applausetestermatching.basedir" file="${ant.file.module_applausetestermatching}"/>
+  
+  <property name="module.jdk.home.applausetestermatching" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.applausetestermatching" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.applausetestermatching" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.applausetestermatching" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="applausetestermatching.output.dir" value="${module.applausetestermatching.basedir}/out/production/ApplauseTesterMatching"/>
+  <property name="applausetestermatching.testoutput.dir" value="${module.applausetestermatching.basedir}/out/test/ApplauseTesterMatching"/>
+  
+  <path id="applausetestermatching.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="applausetestermatching.module.production.classpath">
+    <path refid="${module.jdk.classpath.applausetestermatching}"/>
+  </path>
+  
+  <path id="applausetestermatching.runtime.production.module.classpath">
+    <pathelement location="${applausetestermatching.output.dir}"/>
+  </path>
+  
+  <path id="applausetestermatching.module.classpath">
+    <path refid="${module.jdk.classpath.applausetestermatching}"/>
+    <pathelement location="${applausetestermatching.output.dir}"/>
+  </path>
+  
+  <path id="applausetestermatching.runtime.module.classpath">
+    <pathelement location="${applausetestermatching.testoutput.dir}"/>
+    <pathelement location="${applausetestermatching.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.applausetestermatching">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.applausetestermatching">
+    <patternset refid="excluded.from.module.applausetestermatching"/>
+  </patternset>
+  
+  <path id="applausetestermatching.module.sourcepath">
+    <dirset dir="${module.applausetestermatching.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.applausetestermatching" depends="compile.module.applausetestermatching.production,compile.module.applausetestermatching.tests" description="Compile module ApplauseTesterMatching"/>
+  
+  <target name="compile.module.applausetestermatching.production" depends="register.custom.compilers" description="Compile module ApplauseTesterMatching; production classes">
+    <mkdir dir="${applausetestermatching.output.dir}"/>
+    <javac2 destdir="${applausetestermatching.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.applausetestermatching}/javac">
+      <compilerarg line="${compiler.args.applausetestermatching}"/>
+      <bootclasspath refid="applausetestermatching.module.bootclasspath"/>
+      <classpath refid="applausetestermatching.module.production.classpath"/>
+      <src refid="applausetestermatching.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.applausetestermatching"/>
+    </javac2>
+    
+    <copy todir="${applausetestermatching.output.dir}">
+      <fileset dir="${module.applausetestermatching.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.applausetestermatching.tests" depends="register.custom.compilers,compile.module.applausetestermatching.production" description="compile module ApplauseTesterMatching; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.applausetestermatching" description="cleanup module">
+    <delete dir="${applausetestermatching.output.dir}"/>
+    <delete dir="${applausetestermatching.testoutput.dir}"/>
+  </target>
+</project>
